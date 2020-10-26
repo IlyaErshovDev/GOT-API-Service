@@ -6,9 +6,10 @@ const CharList = styled.ul`
     padding-left: 0;
     margin-bottom: 0;
     border-radius: .25rem;
-    margin-top: 0;
+    margin-top: 10px;
     box-sizing: border-box;
     cursor: pointer;
+    
 `;
 
 

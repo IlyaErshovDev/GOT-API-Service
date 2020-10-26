@@ -4,10 +4,13 @@ import Spinner from '../spinner';
 import ErrorMessage from '../errorMessage';
 import styled from 'styled-components';
 import img from './close-btn.svg'
+import { Button } from 'reactstrap';
+
+
 const RandomHero = styled.div`
 background-color: #fff;
 padding: 25px 25px 15px 25px;
-margin-bottom: 40px;
+margin-bottom: 30px;
 border-radius: 5px;
 h4 {
     margin-bottom: 20px;
@@ -67,27 +70,33 @@ export default class RandomChar extends Component {
             .catch(this.onError);
     }
 
-    toggleRChr = (flag) => {
-        this.setState({flag: true}) 
+    toggleRChr = () => {
+        this.setState(({flag}) => ({
+            flag: !flag
+          }))
     }
 
     render() {
 
         const {char, loading, error, flag } = this.state;
 
-        if (flag) return null;
-        const errorMessage = error ? <ErrorMessage/> : null;
-        const spinner = loading ? <Spinner/> : null;
-        const content = !(loading || error) ?  <View char={char}/> : null;
-
-        return (
-            <RandomHero>
-              <IconBox onClick={this.toggleRChr}>  <CloseBtn src={img}/> </IconBox>
-                {errorMessage}
-                {spinner}
-             {content}
-            </RandomHero>
-        );
+        if (flag) { 
+            return  <Button color="secondary" onClick={this.toggleRChr}>Show random character</Button>;
+        } else {
+            const errorMessage = error ? <ErrorMessage/> : null;
+            const spinner = loading ? <Spinner/> : null;
+            const content = !(loading || error) ?  <View char={char}/> : null;
+    
+            return (
+                <RandomHero>
+                  <IconBox onClick={this.toggleRChr}>  <CloseBtn src={img}/> </IconBox>
+                    {errorMessage}
+                    {spinner}
+                 {content}
+                </RandomHero>
+            );
+        }
+    
     }
 }
 
