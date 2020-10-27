@@ -13,7 +13,8 @@
     };
     async getAllCharacters() {
         const res = await this.getResource('/characters?page=5&pageSize=10');
-        return res.map(this._transformCharacter)
+        // console.log(res);
+        return res.map(this._transformCharacter.bind(this))
     }
     async getCharacter(id) {
         const character = await this.getResource(`/characters/${id}`);
@@ -22,7 +23,7 @@
 
     async getAllBooks() {
         const books = await this.getResource('/books/');
-        return this._transformBook(books);
+        return books.map(this._transformBook.bind(this));
     }
     async getBook(id) {
         const book = await this.getResource(`/books/${id}`);
@@ -31,20 +32,21 @@
 
     async getAllHouses() {
         const houses = await this.getResource('/houses/');
-        return this._transformHouse(houses);
+        return houses.map(this._transformHouse.bind(this));
     }
     async getHouse(id) {
         const house = await this.getResource(`/houses/${id}`);
         return this._transformHouse(house);
     }
 
-    checkData(prop) {
+    checkData = (prop) => {
         return prop=== '' ? prop = 'No Data' : prop; 
     }
 
     _transformCharacter(char) {
       
         return {
+            id: parseInt(this.checkData(char.url).match(/\d+/)),
             name:  this.checkData(char.name),
             gender:  this.checkData(char.gender),
             born:  this.checkData(char.born),

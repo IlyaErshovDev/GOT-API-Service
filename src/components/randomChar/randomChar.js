@@ -36,10 +36,10 @@ font-weight: bold;
 
 export default class RandomChar extends Component {
 
-    constructor() {
-        super();
-        this.updateChar();
-    }
+    // constructor() {
+    //     super();
+      
+    // }
 
     gotService = new gotService();
     state = {
@@ -47,6 +47,16 @@ export default class RandomChar extends Component {
         loading: true,
         error: false,
         flag: false
+    }
+
+
+    componentDidMount() {
+        this.updateChar();
+        this.timerId = setInterval(this.updateChar, 5000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timerId);
     }
 
     onCharLoaded = (char) => {
@@ -63,11 +73,12 @@ export default class RandomChar extends Component {
         })
     }
 
-    updateChar() {
+    updateChar = () => {
         const id = Math.floor(25 + Math.random() * (140 + 1 - 25)); //25 -140
         this.gotService.getCharacter(id)
             .then(this.onCharLoaded)
             .catch(this.onError);
+
     }
 
     toggleRChr = () => {
