@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import gotService from '../../services/gotService';
 import styled from 'styled-components';
 import Spinner from '../spinner';
 import ErrorMessage from '../errorMessage';
 
-const CharList = styled.ul`
+const ItemsList = styled.ul`
     display: flex;
     flex-direction: column;
     padding-left: 0;
@@ -18,26 +17,26 @@ const CharList = styled.ul`
 
 
 export default class ItemList extends Component {
-    gotService = new gotService();
     
     state = {
-        charList: null,
+        itemList: null,
         loading: false,
         error: false
     }
-    onCharDetailsLoaded = (charList) => {
-        console.log(charList);
+    onCharDetailsLoaded = (itemList) => {
         this.setState({
-            charList,
+            itemList,
             loading: false
         })
     }
 
     componentDidMount() {
+        const {getData} = this.props;
+
         this.setState({
             loading: true
         })
-        this.gotService.getAllCharacters()
+        getData()
         .then( this.onCharDetailsLoaded )
         .catch( () => this.onError())
         
@@ -45,16 +44,18 @@ export default class ItemList extends Component {
 
     onError(){
         this.setState({
-            char: null,
+            itemList: null,
             error: true
         })
     }
 
     renderItems(data) {
         return data.map((item) => {
+            const {id} = item;
+            const label = this.props.renderItem(item);
             return (
-                <li key={item.id} className="list-group-item"  onClick={() => this.props.onCharSelected(item.id)} >
-                    {item.name}
+                <li key={id} className="list-group-item"  onClick={() => this.props.onItemSelected(item.id)} >
+                    {label}
                 </li>
             )
         })
@@ -62,22 +63,22 @@ export default class ItemList extends Component {
 
     render() {
 
-        const {charList, error} = this.state;
+        const {itemList, error} = this.state;
         
         if (error) {
             return <ErrorMessage/>
         }
 
-        if (!charList || this.state.loading) {
-            return  <CharList><Spinner/></CharList>
+        if (!itemList || this.state.loading) {
+            return  <ItemsList><Spinner/></ItemsList>
         }
 
-        const items = this.renderItems(charList);
+        const items = this.renderItems(itemList);
 
         return (
-            <CharList>
+            <ItemsList>
                 {items}
-            </CharList>
+            </ItemsList>
         );
     }
 }
