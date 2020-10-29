@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import {Col, Row, Container} from 'reactstrap';
 import Header from '../header';
 import RandomChar from '../randomChar';
-import CharacterPage from '../characterPage';
+import {CharacterPage, BooksPage, HousesPage} from '../pages';
 import ErrorMessage from '../errorMessage';
 import gotService from '../../services/gotService';
-import CharDetails from '../charDetails';
+import ItemDetails from '../itemDetails';
 import ItemList from '../itemList';
 import styled from 'styled-components';
 
@@ -45,26 +45,8 @@ export default class App extends Component{
                         </Col>
                     </Row>
                 <CharacterPage/>
-                <Row>
-                        <Col md='6'>
-                            <ItemList onItemSelected={this.onItemSelected}
-                            getData={this.gotService.getAllBooks}
-                            renderItem={(item) => `${item.name}`}/>
-                        </Col>
-                        <Col md='6'>
-                            <CharDetails charId={this.state.selectedChar} />
-                        </Col>
-                </Row>
-                <Row>
-                        <Col md='6'>
-                            <ItemList onItemSelected={this.onItemSelected}
-                            getData={this.gotService.getAllHouses}
-                            renderItem={(item) => `${item.name}`}/>
-                        </Col>
-                        <Col md='6'>
-                            <CharDetails charId={this.state.selectedChar} />
-                        </Col>
-                </Row>
+                <BooksPage/>
+                <HousesPage/>
                 </Container>
             </>
         );

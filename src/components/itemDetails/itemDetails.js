@@ -37,61 +37,61 @@ export {
     Field
 }
 
-export default class CharDetails extends Component {
+export default class ItemDetails extends Component {
     gotService = new gotService();
     
     state = {
-        char: null,
+        item: null,
         loading: true,
         error: true,
     }
 
     componentDidMount() {
-        this.updateChar();
+        this.updateItem();
         
     }
 
-    onCharDetailsLoaded = (char) => {
+    onCharDetailsLoaded = (item) => {
         this.setState({
-            char,
+            item,
             loading: false
         })
     }
 
-    updateChar() {
-        const {charId} = this.props;
-        if (!charId) {
+    updateItem() {
+        const {getData, itemId} = this.props;
+        if (!itemId) {
             return;
         }
          this.setState({
             loading: true
         })
 
-        this.gotService.getCharacter(charId)
+        getData(itemId)
             .then( this.onCharDetailsLoaded )
             .catch( () => this.onError())
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.charId !== prevProps.charId) {
-            this.updateChar();
+        if (this.props.itemId !== prevProps.itemId) {
+            this.updateItem();
         }
     } 
 
     onError(){
         this.setState({
-            char: null,
+            item: null,
             error: true
         })
     }
 
     render() {
 
-        if(!this.state.char) {
-            return <SelectError>Please, select a character</SelectError>
+        if(!this.state.item) {
+            return <SelectError>Please, select an item</SelectError>
         }
 
-        const {name, gender, born, died, culture} = this.state.char;
+        const {name, gender, born, died, culture} = this.state.item;
         
         if (this.state.loading) {
             return (

@@ -13,7 +13,6 @@
     };
     getAllCharacters = async () => {
         const res = await this.getResource('/characters?page=5&pageSize=10');
-        // console.log(res);
         return res.map(this._transformCharacter.bind(this))
     }
     getCharacter = async (id) => {
@@ -57,6 +56,7 @@
 
     _transformHouse(house) {
         return {
+            id: parseInt(this.checkData(house.url).match(/\d+/)),
             name:  this.checkData(house.name),
             region:  this.checkData(house.region),
             words:  this.checkData(house.words),
@@ -69,6 +69,7 @@
 
     _transformBook(book) {
         return {
+            id: parseInt(this.checkData(book.url).match(/\d+/)),
             name:  this.checkData(book.name), 
             numberOfPages:  this.checkData(book.numberOfPages),
             publisher:  this.checkData(book.publisher),

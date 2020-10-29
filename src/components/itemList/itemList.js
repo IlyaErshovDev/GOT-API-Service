@@ -23,7 +23,7 @@ export default class ItemList extends Component {
         loading: false,
         error: false
     }
-    onCharDetailsLoaded = (itemList) => {
+    onItemDetailsLoaded = (itemList) => {
         this.setState({
             itemList,
             loading: false
@@ -37,7 +37,7 @@ export default class ItemList extends Component {
             loading: true
         })
         getData()
-        .then( this.onCharDetailsLoaded )
+        .then( this.onItemDetailsLoaded )
         .catch( () => this.onError())
         
     }
