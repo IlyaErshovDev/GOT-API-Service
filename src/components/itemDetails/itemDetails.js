@@ -28,7 +28,7 @@ const Field = ({item, field, label}) => {
     return (
         <li className="list-group-item d-flex justify-content-between">
             <Span>{label}</Span>
-            <span>{[field]}</span>
+            <span>{item[field]}</span>
          </li>
     )
 };
@@ -91,7 +91,8 @@ export default class ItemDetails extends Component {
             return <SelectError>Please, select an item</SelectError>
         }
 
-        const {name, gender, born, died, culture} = this.state.item;
+        const {item} = this.state,
+        {name} = item;
         
         if (this.state.loading) {
             return (
@@ -106,7 +107,11 @@ export default class ItemDetails extends Component {
              
                 <h4>{name}</h4>
                 <ul className="list-group list-group-flush">
-                   {this.props.children}
+                   {
+                       React.Children.map(this.props.children, (child) => {
+                            return React.cloneElement(child, {item})
+                       })
+                   }
                 </ul>
             </CharacterBlock>
         );

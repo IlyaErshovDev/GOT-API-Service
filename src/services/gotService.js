@@ -31,6 +31,7 @@
 
     getAllHouses = async () => {
         const houses = await this.getResource('/houses/');
+        console.log(houses);
         return houses.map(this._transformHouse.bind(this));
     }
     getHouse = async (id) =>  {

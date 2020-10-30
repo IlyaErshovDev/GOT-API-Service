@@ -1,9 +1,10 @@
 import CharacterPage from './characterPage';
 import BooksPage from './booksPage';
 import HousesPage from './housesPage';
-//import booksItem from './BooksItem'
+import BooksItem from './booksItem'
 export {
     CharacterPage,
     BooksPage,
-    HousesPage
+    HousesPage,
+    BooksItem
 };
