@@ -36,11 +36,6 @@ font-weight: bold;
 
 export default class RandomChar extends Component {
 
-    // constructor() {
-    //     super();
-      
-    // }
-
     gotService = new gotService();
     state = {
         char: {},

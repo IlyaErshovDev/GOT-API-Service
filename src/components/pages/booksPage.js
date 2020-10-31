@@ -3,10 +3,13 @@ import ItemList from '../itemList';
 import ItemDetails, {Field} from '../itemDetails';
 import ErrorMessage from '../errorMessage';
 import gotService from '../../services/gotService';
-import RowBlock from '../rowBlock'
+import RowBlock from '../rowBlock';
+import { Button } from 'reactstrap';
+import {withRouter} from 'react-router-dom';
 
 
-export default class BooksPage extends Component {
+
+class BooksPage extends Component {
     gotService = new gotService();
 
     state = {
@@ -39,6 +42,7 @@ export default class BooksPage extends Component {
         ),
 
         bookDetails = (
+            <>
             <ItemDetails itemId={this.state.selectedBook}
                 getData = {this.gotService.getBook}>
                 <Field field = 'name' label = 'Name'/>
@@ -46,6 +50,9 @@ export default class BooksPage extends Component {
                 <Field field = 'publisher' label = 'Publisher'/>
                 <Field field = 'released' label = 'Released'/>
             </ItemDetails>
+            <Button onClick={() => {
+                this.props.history.push(`${this.state.selectedBook}`);
+            }} color="secondary">Show more info</Button></>
         );
         
         return (
@@ -53,3 +60,5 @@ export default class BooksPage extends Component {
         )
     }
 }
+
+export default withRouter(BooksPage);

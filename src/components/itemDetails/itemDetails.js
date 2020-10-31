@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import gotService from '../../services/gotService';
 import styled from 'styled-components';
 import Spinner from '../spinner';
+import { Button } from 'reactstrap';
 
 
 const CharacterBlock = styled.div`
@@ -39,12 +40,17 @@ export {
 
 export default class ItemDetails extends Component {
     gotService = new gotService();
+    constructor() {
+        super();
     
-    state = {
-        item: null,
-        loading: true,
-        error: true,
-    }
+        this.state = {
+            item: null,
+            loading: true,
+            error: true,
+        }
+        this._isMounted = false;
+      }
+    
 
     componentDidMount() {
         this.updateItem();
@@ -63,13 +69,16 @@ export default class ItemDetails extends Component {
         if (!itemId) {
             return;
         }
-         this.setState({
-            loading: true
-        })
-
+       
+        this._isMounted = true;
+        if (this._isMounted) {
+            this.setState({
+                loading: true
+            })
         getData(itemId)
             .then( this.onCharDetailsLoaded )
             .catch( () => this.onError())
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -77,6 +86,9 @@ export default class ItemDetails extends Component {
             this.updateItem();
         }
     } 
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
 
     onError(){
         this.setState({

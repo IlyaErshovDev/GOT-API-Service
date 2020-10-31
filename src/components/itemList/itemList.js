@@ -3,7 +3,13 @@ import styled from 'styled-components';
 import Spinner from '../spinner';
 import ErrorMessage from '../errorMessage';
 
-const ItemsList = styled.ul`
+const LoadBox = styled.div`
+background-color: #fff;
+padding: 25px 25px 15px 25px;
+margin-bottom: 30px;
+border-radius: 5px;
+`,
+ItemsList = styled.ul`
     display: flex;
     flex-direction: column;
     padding-left: 0;
@@ -17,12 +23,17 @@ const ItemsList = styled.ul`
 
 
 export default class ItemList extends Component {
+    constructor() {
+        super();
     
-    state = {
-        itemList: null,
-        loading: false,
-        error: false
-    }
+        this.state = {
+            itemList: null,
+            loading: false,
+            error: false
+        }
+        this._isMounted = false;
+      }
+   
     onItemDetailsLoaded = (itemList) => {
         this.setState({
             itemList,
@@ -32,15 +43,22 @@ export default class ItemList extends Component {
 
     componentDidMount() {
         const {getData} = this.props;
+        this._isMounted = true;
 
-        this.setState({
-            loading: true
-        })
+      
+        if (this._isMounted) {
+            this.setState({
+                loading: true
+            })
         getData()
         .then( this.onItemDetailsLoaded )
         .catch( () => this.onError())
-        
+        }
     }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+      }
 
     onError(){
         this.setState({
@@ -70,7 +88,7 @@ export default class ItemList extends Component {
         }
 
         if (!itemList || this.state.loading) {
-            return  <ItemsList><Spinner/></ItemsList>
+            return <LoadBox><Spinner/></LoadBox> 
         }
 
         const items = this.renderItems(itemList);
