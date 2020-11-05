@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import Spinner from '../spinner';
 import ErrorMessage from '../errorMessage';
@@ -21,82 +21,56 @@ ItemsList = styled.ul`
     
 `;
 
+function ItemList({getData, onItemSelected, renderItem}) {
 
-export default class ItemList extends Component {
-    constructor() {
-        super();
-    
-        this.state = {
-            itemList: null,
-            loading: false,
-            error: false
-        }
-        this._isMounted = false;
-      }
-   
-    onItemDetailsLoaded = (itemList) => {
-        this.setState({
-            itemList,
-            loading: false
-        })
-    }
+    const [itemList, updateList] = useState([]);
+    const [loading, updateLoading] = useState(false);
+    const [error, updateError] = useState(false);
 
-    componentDidMount() {
-        const {getData} = this.props;
-        this._isMounted = true;
-
+    useEffect(() => {
       
-        if (this._isMounted) {
-            this.setState({
-                loading: true
-            })
+        updateLoading(true);
         getData()
-        .then( this.onItemDetailsLoaded )
-        .catch( () => this.onError())
-        }
-    }
+            .then( (data) => {
+                updateList(data);
+                updateLoading(false);
+             })
+            .catch( () => updateError(true))
+            }, [])
 
-    componentWillUnmount() {
-        this._isMounted = false;
-      }
+   
 
-    onError(){
-        this.setState({
-            itemList: null,
-            error: true
-        })
-    }
 
-    renderItems(data) {
+   function renderItems(data) {
         return data.map((item) => {
             const {id} = item;
-            const label = this.props.renderItem(item);
+            const label = renderItem(item);
             return (
-                <li key={id} className="list-group-item"  onClick={() => this.props.onItemSelected(item.id)} >
+                <li key={id} className="list-group-item"  onClick={() => onItemSelected(item.id)} >
                     {label}
                 </li>
             )
         })
     }
 
-    render() {
-
-        const {itemList, error} = this.state;
+    
         
         if (error) {
             return <ErrorMessage/>
         }
 
-        if (!itemList || this.state.loading) {
+        if (!itemList || loading) {
             return <LoadBox><Spinner/></LoadBox> 
         }
 
-        const items = this.renderItems(itemList);
+        const items = renderItems(itemList);
 
         return (
             <ItemsList>
                 {items}
             </ItemsList>
         );
-    }
+    
 }
+
+export default ItemList;

@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import gotService from '../../services/gotService';
 import styled from 'styled-components';
 import Spinner from '../spinner';
-import { Button } from 'reactstrap';
 
 
 const CharacterBlock = styled.div`
