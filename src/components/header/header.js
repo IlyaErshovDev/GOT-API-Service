@@ -13,6 +13,10 @@ const HeaderTitle = styled.h3`
     font-size: 24px;
     color: #fff;
     margin: 0;
+
+    @media (max-width: 420px) {
+        font-size 15px;
+    }
 `;
 
 const HeaderLinks = styled.ul`
@@ -24,6 +28,10 @@ const HeaderLinks = styled.ul`
     li {
         margin-right: 20px;
         font-size: 18px;
+        @media (max-width: 400px) {
+            font-size 15px;
+            margin-right: 5px;
+        }
     }
 `;
 
